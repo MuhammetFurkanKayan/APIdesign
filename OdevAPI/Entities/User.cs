@@ -18,4 +18,11 @@ public class User
     public string Phone { get; set; }
     
     public string Address { get; set; }
+    
+    // Audit Fields
+    public DateTime CreatedAt { get; set; }
+    
+    public DateTime? UpdatedAt { get; set; }
+    
+    public bool IsDeleted { get; set; }
 }

@@ -10,4 +10,11 @@ public class Category
     public required string Name { get; set; }
     
     public string Description { get; set; }
+    
+    // Audit Fields
+    public DateTime CreatedAt { get; set; }
+    
+    public DateTime? UpdatedAt { get; set; }
+    
+    public bool IsDeleted { get; set; }
 }

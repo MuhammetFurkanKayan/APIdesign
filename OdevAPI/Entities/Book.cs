@@ -20,4 +20,11 @@ public class Book
     public required int AvailableCopies { get; set; }
     
     public int CategoryId { get; set; }
+    
+    // Audit Fields
+    public DateTime CreatedAt { get; set; }
+    
+    public DateTime? UpdatedAt { get; set; }
+    
+    public bool IsDeleted { get; set; }
 }

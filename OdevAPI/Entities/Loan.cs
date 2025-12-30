@@ -27,4 +27,11 @@ public class Loan
     public int UserId { get; set; }
     
     public int BookId { get; set; }
+    
+    // Audit Fields
+    public DateTime CreatedAt { get; set; }
+    
+    public DateTime? UpdatedAt { get; set; }
+    
+    public bool IsDeleted { get; set; }
 }

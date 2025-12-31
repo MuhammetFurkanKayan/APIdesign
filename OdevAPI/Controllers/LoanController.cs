@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using OdevAPI.Common;
+using OdevAPI.DTOs;
 using OdevAPI.Entities;
 using OdevAPI.Services;
 
@@ -36,6 +37,27 @@ public class LoanController : Controller
         {
             Success = true,
             Message = "Loan found",
+            Data = loan
+        };
+    }
+
+    [HttpPost]
+    public async Task<ApiResponse<Loan>> Create([FromBody] LoanCreateDto loanCreate)
+    {
+        var loan = await _loanService.CreateAsync(loanCreate);
+        if (loan is null)
+        {
+            return new ApiResponse<Loan>()
+            {
+                Success = false,
+                Message = "Loan could not be created",
+                Data = null
+            };
+        }
+        return new ApiResponse<Loan>()
+        {
+            Success = true,
+            Message = "Loan created",
             Data = loan
         };
     }

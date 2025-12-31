@@ -3,6 +3,7 @@ using OdevAPI.Entities;
 using OdevAPI.Data;
 using OdevAPI.DTOs;
 using OdevAPI.Enums;
+using OdevAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddOpenApi();
+builder.Services.AddScoped<LoanService>();
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -23,6 +26,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapControllers();
 
 // ========== USERS ==========
 app.MapGet("/users", async (AppDbContext db) => await db.Users.ToListAsync());

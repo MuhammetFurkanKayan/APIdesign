@@ -1,13 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using OdevAPI.Enums;
 
 namespace OdevAPI.Entities;
-
-public enum LoanStatus
-{
-    Active,
-    Returned,
-    Overdue
-}
 
 public class Loan
 {

@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using OdevAPI.Entities;
 using OdevAPI.Data;
+using OdevAPI.DTOs;
+using OdevAPI.Enums;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -166,7 +168,7 @@ app.MapPost("/loans", async (Loan loan, AppDbContext db) =>
     return Results.Created($"/loans/{loan.Id}", loan);
 });
 
-app.MapPut("/loans/{id}", async (int id, Loan inputLoan, AppDbContext db) =>
+app.MapPut("/loans/{id}", async (int id, LoanUpdateDto inputLoan, AppDbContext db) =>
 {
     var loan = await db.Loans.FindAsync(id);
     if (loan is null) return Results.NotFound("Loan not found");
@@ -174,8 +176,7 @@ app.MapPut("/loans/{id}", async (int id, Loan inputLoan, AppDbContext db) =>
     loan.Notes = inputLoan.Notes;
     loan.Status = inputLoan.Status;
     loan.DueDate = inputLoan.DueDate;
-    loan.UserId = inputLoan.UserId;
-    loan.BookId = inputLoan.BookId;
+    loan.UpdatedAt = DateTime.UtcNow;
 
     await db.SaveChangesAsync();
     return Results.NoContent();

@@ -7,9 +7,14 @@ namespace OdevAPI.Controllers;
 
 [ApiController]
 [Route("/api/v1/loans")]
-public class LoanController(LoanService loanService) : Controller
+public class LoanController : Controller
 {
-    private readonly LoanService _loanService = loanService;
+    private readonly LoanService _loanService;
+
+    public LoanController(LoanService loanService)
+    {
+        _loanService = loanService;
+    }
 
     [HttpGet]
     public async Task<ApiResponse<List<Loan>>> GetAll()

@@ -3,40 +3,66 @@ using OdevAPI.Data;
 using OdevAPI.DTOs;
 using OdevAPI.Entities;
 using OdevAPI.Enums;
+using OdevAPI.Interfaces;
 
 namespace OdevAPI.Services;
 
-public class LoanService(AppDbContext context)
+public class LoanService(AppDbContext context, ILogger<LoanService> logger) : ILoanService
 {
     private readonly AppDbContext _context = context;
+    private readonly ILogger<LoanService> _logger = logger;
 
     public async Task<List<Loan>> GetAllAsync()
     {
+        _logger.LogDebug("GetAllAsync method called");
         var loans = await _context.Loans.ToListAsync();
+        _logger.LogDebug("{Count} loans retrieved from database", loans.Count);
         return loans;
     }
 
     public async Task<Loan> GetByIdAsync(int id)
     {
+        _logger.LogDebug("GetByIdAsync method called: LoanId={LoanId}", id);
         var loan = await _context.Loans.FindAsync(id);
-        if (loan is null) throw new KeyNotFoundException("Loan not found");
+        if (loan is null)
+        {
+            _logger.LogWarning("Loan not found: LoanId={LoanId}", id);
+            throw new KeyNotFoundException("Loan not found");
+        }
+        _logger.LogDebug("Loan found: LoanId={LoanId}", id);
         return loan;
     }
 
     public async Task<Loan> CreateAsync(LoanCreateDto loanCreate)
     {
+        _logger.LogDebug("CreateAsync method called: User={UserId}, Book={BookId}", 
+            loanCreate.UserId, loanCreate.BookId);
+
         var user = await _context.Users.FindAsync(loanCreate.UserId);
         if (user is null)
+        {
+            _logger.LogWarning("User not found: UserId={UserId}", loanCreate.UserId);
             throw new Exception("User not found");
+        }
 
         var book = await _context.Books.FindAsync(loanCreate.BookId);
         if (book is null)
+        {
+            _logger.LogWarning("Book not found: BookId={BookId}", loanCreate.BookId);
             throw new Exception("Book not found");
+        }
+
         if (book.AvailableCopies < 1)
+        {
+            _logger.LogWarning("No copies available: BookId={BookId}, Available={Available}", 
+                loanCreate.BookId, book.AvailableCopies);
             throw new Exception($"No copies available. Available: {book.AvailableCopies}");
+        }
 
         book.AvailableCopies -= 1;
         _context.Books.Update(book);
+        _logger.LogDebug("Book copies updated: BookId={BookId}, NewAvailable={NewAvailable}", 
+            book.Id, book.AvailableCopies);
 
         var loan = new Loan
         {
@@ -51,14 +77,22 @@ public class LoanService(AppDbContext context)
 
         await _context.Loans.AddAsync(loan);
         await _context.SaveChangesAsync();
+        
+        _logger.LogInformation("Loan created: LoanId={LoanId}, User={UserId}, Book={BookId}", 
+            loan.Id, loan.UserId, loan.BookId);
         return loan;
     }
 
     public async Task<Loan> UpdateAsync(int id, LoanUpdateDto loanUpdate)
     {
+        _logger.LogDebug("UpdateAsync method called: LoanId={LoanId}", id);
+        
         var existingLoan = await _context.Loans.FindAsync(id);
         if (existingLoan is null)
+        {
+            _logger.LogWarning("Loan not found: LoanId={LoanId}", id);
             throw new Exception("Loan not found");
+        }
 
         existingLoan.Notes = loanUpdate.Notes;
         existingLoan.Status = loanUpdate.Status;
@@ -73,20 +107,29 @@ public class LoanService(AppDbContext context)
             {
                 book.AvailableCopies += 1;
                 _context.Books.Update(book);
+                _logger.LogDebug("Book copy restored: BookId={BookId}, NewAvailable={NewAvailable}", 
+                    book.Id, book.AvailableCopies);
             }
             existingLoan.ReturnDate = DateTimeOffset.UtcNow;
         }
 
         _context.Loans.Update(existingLoan);
         await _context.SaveChangesAsync();
+        
+        _logger.LogInformation("Loan updated: LoanId={LoanId}", id);
         return existingLoan;
     }
 
     public async Task<Loan> PatchAsync(int id, LoanPatchDto patchDto)
     {
+        _logger.LogDebug("PatchAsync method called: LoanId={LoanId}", id);
+        
         var loan = await _context.Loans.FindAsync(id);
         if (loan is null)
+        {
+            _logger.LogWarning("Loan not found: LoanId={LoanId}", id);
             throw new Exception("Loan not found");
+        }
 
         if (patchDto.Notes is not null)
             loan.Notes = patchDto.Notes;
@@ -102,6 +145,8 @@ public class LoanService(AppDbContext context)
                 {
                     book.AvailableCopies += 1;
                     _context.Books.Update(book);
+                    _logger.LogDebug("Book copy restored: BookId={BookId}, NewAvailable={NewAvailable}", 
+                        book.Id, book.AvailableCopies);
                 }
                 loan.ReturnDate = DateTimeOffset.UtcNow;
             }
@@ -111,14 +156,21 @@ public class LoanService(AppDbContext context)
         loan.UpdatedAt = DateTime.UtcNow;
         _context.Loans.Update(loan);
         await _context.SaveChangesAsync();
+        
+        _logger.LogInformation("Loan patched: LoanId={LoanId}", id);
         return loan;
     }
 
     public async Task<bool> DeleteAsync(int id)
     {
+        _logger.LogDebug("DeleteAsync method called: LoanId={LoanId}", id);
+        
         var loan = await _context.Loans.FindAsync(id);
         if (loan is null)
+        {
+            _logger.LogWarning("Loan not found: LoanId={LoanId}", id);
             throw new Exception("Loan not found");
+        }
 
         // If not returned, restore book copy
         if (loan.Status != LoanStatus.Returned)
@@ -128,11 +180,15 @@ public class LoanService(AppDbContext context)
             {
                 book.AvailableCopies += 1;
                 _context.Books.Update(book);
+                _logger.LogDebug("Book copy restored: BookId={BookId}, NewAvailable={NewAvailable}", 
+                    book.Id, book.AvailableCopies);
             }
         }
 
         _context.Loans.Remove(loan);
         await _context.SaveChangesAsync();
+        
+        _logger.LogInformation("Loan deleted: LoanId={LoanId}, BookId={BookId}", id, loan.BookId);
         return true;
     }
 }

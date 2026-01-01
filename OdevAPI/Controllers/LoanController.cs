@@ -30,35 +30,122 @@ public class LoanController : Controller
     }
 
     [HttpGet("{id}")]
-    public async Task<ApiResponse<Loan>> Get(int id)
+    public async Task<ApiResponse<Loan>> Get([FromRoute] int id)
     {
-        var loan = await _loanService.GetByIdAsync(id);
-        return new ApiResponse<Loan>()
+        try
         {
-            Success = true,
-            Message = "Loan found",
-            Data = loan
-        };
+            var loan = await _loanService.GetByIdAsync(id);
+            return new ApiResponse<Loan>()
+            {
+                Success = true,
+                Message = "Loan found",
+                Data = loan
+            };
+        }
+        catch (Exception e)
+        {
+            return new ApiResponse<Loan>()
+            {
+                Success = false,
+                Message = e.Message,
+                Data = null
+            };
+        }
     }
 
     [HttpPost]
     public async Task<ApiResponse<Loan>> Create([FromBody] LoanCreateDto loanCreate)
     {
-        var loan = await _loanService.CreateAsync(loanCreate);
-        if (loan is null)
+        try
+        {
+            var loan = await _loanService.CreateAsync(loanCreate);
+            return new ApiResponse<Loan>()
+            {
+                Success = true,
+                Message = "Loan created",
+                Data = loan
+            };
+        }
+        catch (Exception e)
         {
             return new ApiResponse<Loan>()
             {
                 Success = false,
-                Message = "Loan could not be created",
+                Message = e.Message,
                 Data = null
             };
         }
-        return new ApiResponse<Loan>()
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ApiResponse<Loan>> Update([FromRoute] int id, [FromBody] LoanUpdateDto loanUpdate)
+    {
+        try
         {
-            Success = true,
-            Message = "Loan created",
-            Data = loan
-        };
+            var loan = await _loanService.UpdateAsync(id, loanUpdate);
+            return new ApiResponse<Loan>()
+            {
+                Success = true,
+                Message = "Loan updated",
+                Data = loan
+            };
+        }
+        catch (Exception e)
+        {
+            return new ApiResponse<Loan>()
+            {
+                Success = false,
+                Message = e.Message,
+                Data = null
+            };
+        }
+    }
+
+    [HttpPatch("{id}")]
+    public async Task<ApiResponse<Loan>> Patch([FromRoute] int id, [FromBody] LoanPatchDto patchDto)
+    {
+        try
+        {
+            var loan = await _loanService.PatchAsync(id, patchDto);
+            return new ApiResponse<Loan>()
+            {
+                Success = true,
+                Message = "Loan updated (patch)",
+                Data = loan
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<Loan>()
+            {
+                Success = false,
+                Message = ex.Message,
+                Data = null
+            };
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ApiResponse<bool>> Delete([FromRoute] int id)
+    {
+        try
+        {
+            var result = await _loanService.DeleteAsync(id);
+            return new ApiResponse<bool>()
+            {
+                Success = true,
+                Message = "Loan deleted",
+                Data = result
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<bool>()
+            {
+                Success = false,
+                Message = ex.Message,
+                Data = false
+            };
+        }
     }
 }

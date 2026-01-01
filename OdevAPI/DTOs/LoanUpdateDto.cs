@@ -4,9 +4,9 @@ namespace OdevAPI.DTOs;
 
 public class LoanUpdateDto
 {
-    public string Notes { get; set; }
+    public required string Notes { get; set; }
     
-    public LoanStatus Status { get; set; }
+    public required LoanStatus Status { get; set; }
     
-    public DateTimeOffset DueDate { get; set; }
+    public required DateTimeOffset DueDate { get; set; }
 }

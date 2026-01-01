@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using OdevAPI.Common;
 using OdevAPI.DTOs;
 using OdevAPI.Entities;
-using OdevAPI.Services;
+using OdevAPI.Interfaces;
 
 namespace OdevAPI.Controllers;
 
@@ -10,9 +10,9 @@ namespace OdevAPI.Controllers;
 [Route("/api/v1/loans")]
 public class LoanController : Controller
 {
-    private readonly LoanService _loanService;
+    private readonly ILoanService _loanService;
 
-    public LoanController(LoanService loanService)
+    public LoanController(ILoanService loanService)
     {
         _loanService = loanService;
     }

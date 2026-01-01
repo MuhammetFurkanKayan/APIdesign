@@ -4,6 +4,7 @@ using OdevAPI.Entities;
 using OdevAPI.Data;
 using OdevAPI.DTOs;
 using OdevAPI.Enums;
+using OdevAPI.Interfaces;
 using OdevAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +13,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddOpenApi();
-builder.Services.AddScoped<LoanService>();
+builder.Services.AddScoped<ILoanService, LoanService>();
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {

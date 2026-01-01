@@ -3,10 +3,11 @@ using OdevAPI.Data;
 using OdevAPI.DTOs;
 using OdevAPI.Entities;
 using OdevAPI.Enums;
+using OdevAPI.Interfaces;
 
 namespace OdevAPI.Services;
 
-public class LoanService(AppDbContext context)
+public class LoanService(AppDbContext context) : ILoanService
 {
     private readonly AppDbContext _context = context;
 

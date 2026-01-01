@@ -30,6 +30,7 @@ try
 
     builder.Services.AddOpenApi();
     builder.Services.AddScoped<ILoanService, LoanService>();
+    builder.Services.AddScoped<IAuditLogService, AuditLogService>();
     builder.Services.AddControllers()
         .AddJsonOptions(options =>
         {

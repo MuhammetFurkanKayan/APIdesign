@@ -28,9 +28,11 @@ try
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+    builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
     builder.Services.AddOpenApi();
     builder.Services.AddScoped<ILoanService, LoanService>();
     builder.Services.AddScoped<IAuditLogService, AuditLogService>();
+    builder.Services.AddScoped<IEmailService, EmailService>();
     builder.Services.AddControllers()
         .AddJsonOptions(options =>
         {

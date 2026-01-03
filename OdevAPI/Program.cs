@@ -51,6 +51,14 @@ try
         app.UseSwaggerUI();
     }
 
+    if (args.Contains("migrate"))
+    {
+        using var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        db.Database.Migrate();
+        return;
+    }
+
     app.UseHttpsRedirection();
 
     app.MapControllers();

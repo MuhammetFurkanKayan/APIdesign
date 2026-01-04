@@ -8,6 +8,7 @@ using OdevAPI.Interfaces;
 using OdevAPI.Services;
 using Serilog;
 using Serilog.Context;
+using OdevAPI.Middleware;
 
 // Serilog configuration
 Log.Logger = new LoggerConfiguration()
@@ -68,6 +69,9 @@ try
         db.Database.Migrate();
         return;
     }
+
+    // Global Exception Handler
+    app.UseGlobalExceptionHandler();
 
     // Request logging middleware
     app.Use(async (context, next) =>

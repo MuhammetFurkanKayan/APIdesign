@@ -17,7 +17,7 @@ public class AuditLogService : IAuditLogService
     public async Task<IEnumerable<AuditLog>> GetAllAsync()
     {
         return await _context.AuditLogs
-            .OrderByDescending(a => a.ChangedAt)
+            .OrderByDescending(a => a.CreatedAt)
             .ToListAsync();
     }
 
@@ -25,7 +25,7 @@ public class AuditLogService : IAuditLogService
     {
         return await _context.AuditLogs
             .Where(a => a.TableName == tableName)
-            .OrderByDescending(a => a.ChangedAt)
+            .OrderByDescending(a => a.CreatedAt)
             .ToListAsync();
     }
 
@@ -33,15 +33,15 @@ public class AuditLogService : IAuditLogService
     {
         return await _context.AuditLogs
             .Where(a => a.TableName == tableName && a.EntityId == entityId)
-            .OrderByDescending(a => a.ChangedAt)
+            .OrderByDescending(a => a.CreatedAt)
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<AuditLog>> GetByDateRangeAsync(DateTimeOffset startDate, DateTimeOffset endDate)
+    public async Task<IEnumerable<AuditLog>> GetByDateRangeAsync(DateTime startDate, DateTime endDate)
     {
         return await _context.AuditLogs
-            .Where(a => a.ChangedAt >= startDate && a.ChangedAt <= endDate)
-            .OrderByDescending(a => a.ChangedAt)
+            .Where(a => a.CreatedAt >= startDate && a.CreatedAt <= endDate)
+            .OrderByDescending(a => a.CreatedAt)
             .ToListAsync();
     }
 }

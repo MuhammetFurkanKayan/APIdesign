@@ -37,7 +37,7 @@ public class AuditLogController : ControllerBase
     }
 
     [HttpGet("date-range")]
-    public async Task<IActionResult> GetByDateRange([FromQuery] DateTimeOffset startDate, [FromQuery] DateTimeOffset endDate)
+    public async Task<IActionResult> GetByDateRange([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
     {
         if (startDate > endDate)
         {

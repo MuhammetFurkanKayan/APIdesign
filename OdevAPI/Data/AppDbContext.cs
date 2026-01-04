@@ -178,6 +178,7 @@ public class AuditEntry
             Action = Action,
             EntityId = EntityId,
             ChangedAt = ChangedAt,
+            CreatedAt = DateTime.UtcNow,
             OldValues = OldValues.Count == 0 ? null : JsonSerializer.Serialize(OldValues),
             NewValues = NewValues.Count == 0 ? null : JsonSerializer.Serialize(NewValues)
         };

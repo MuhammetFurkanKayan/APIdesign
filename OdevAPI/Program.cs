@@ -10,6 +10,9 @@ using Serilog;
 using Serilog.Context;
 using OdevAPI.Middleware;
 using OdevAPI.Common;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 // Serilog configuration
 Log.Logger = new LoggerConfiguration()
@@ -41,10 +44,30 @@ try
         options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
     builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+    builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
     builder.Services.AddOpenApi();
     builder.Services.AddScoped<ILoanService, LoanService>();
     builder.Services.AddScoped<IAuditLogService, AuditLogService>();
     builder.Services.AddScoped<IEmailService, EmailService>();
+    builder.Services.AddScoped<IAuthService, AuthService>();
+
+    // JWT Authentication
+    var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtSettings?.Issuer,
+                ValidAudience = jwtSettings?.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings?.SecretKey ?? ""))
+            };
+        });
+    builder.Services.AddAuthorization();
     builder.Services.AddControllers()
         .AddJsonOptions(options =>
         {
@@ -71,6 +94,14 @@ try
         return;
     }
 
+    // Seed initial data
+    using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        db.Database.EnsureCreated();
+        DbSeeder.SeedData(db);
+    }
+
     // Global Exception Handler
     app.UseGlobalExceptionHandler();
 
@@ -86,6 +117,9 @@ try
     });
 
     app.UseHttpsRedirection();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
 
     app.UseSerilogRequestLogging(options =>
     {

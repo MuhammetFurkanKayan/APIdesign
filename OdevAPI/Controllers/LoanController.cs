@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using OdevAPI.Common;
 using OdevAPI.DTOs;
 using OdevAPI.Interfaces;
@@ -8,6 +9,7 @@ namespace OdevAPI.Controllers;
 
 [ApiController]
 [Route("/api/v1/loans")]
+[Authorize]
 public class LoanController : Controller
 {
     private readonly ILoanService _loanService;

@@ -55,6 +55,8 @@
                                               │ - Name       │
                                               │ - LastName   │
                                               │ - Email      │
+                                              │ - Username   │
+                                              │ - Role       │
                                               │ - Phone      │
                                               │ - Address    │
                                               │ - CreatedAt  │
@@ -69,7 +71,50 @@
 - **Entity Framework Core** - ORM
 - **SQLite** - Database
 - **Serilog** - Logging (JSON Format)
+- **JWT Bearer** - Authentication
 - **Swagger/OpenAPI** - API Dokümantasyonu
+
+## 🔐 Authentication
+
+### Auth Endpoints
+
+| Method | Endpoint                | Açıklama             |
+| ------ | ----------------------- | -------------------- |
+| POST   | `/api/v1/auth/login`    | Kullanıcı girişi     |
+| POST   | `/api/v1/auth/register` | Yeni kullanıcı kaydı |
+
+### Login Request
+
+```json
+{
+  "username": "admin",
+  "password": "admin123"
+}
+```
+
+### Login Response
+
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "username": "admin",
+    "role": "Admin",
+    "expiresAt": "2024-01-01T11:00:00Z"
+  }
+}
+```
+
+### Varsayılan Kullanıcılar
+
+| Username | Password | Role  |
+| -------- | -------- | ----- |
+| admin    | admin123 | Admin |
+| ahmet    | user123  | User  |
+| ayse     | user123  | User  |
+| mehmet   | user123  | User  |
 
 ## 📋 Endpoint Listesi
 
@@ -257,10 +302,10 @@ OdevAPI/
 - [x] Docker desteği
 - [x] CI/CD Pipeline (GitHub Actions)
 - [x] Email servisi
-
-### Bonus
-
-- [x] Soft Delete (IsDeleted alanı)
+- [x] JWT Authentication
+- [x] Role-based Access Control (Admin/User)
+- [x] Soft Delete
+- [x] Seed Data (Başlangıç verileri)
 
 ## 👤 Geliştirici
 

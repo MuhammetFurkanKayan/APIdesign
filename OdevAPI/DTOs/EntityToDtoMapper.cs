@@ -13,6 +13,8 @@ public static class EntityToDtoMapper
             LastName = user.LastName,
             FullName = user.FullName,
             Email = user.Email,
+            Username = user.Username,
+            Role = user.Role,
             Phone = user.Phone,
             Address = user.Address,
             CreatedAt = user.CreatedAt,

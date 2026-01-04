@@ -2,33 +2,33 @@
 
 .NET 9 REST API ile geliştirilmiş Kütüphane Yönetim Sistemi.
 
-## 🏗️ Mimari
+## Mimari
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                      Presentation Layer                       │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐    │
-│  │  Controllers │  │  Minimal API │  │  Swagger/OpenAPI │    │
-│  └──────────────┘  └──────────────┘  └──────────────────┘    │
+│                      Presentation Layer                     │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐  │
+│  │  Controllers │  │  Minimal API │  │  Swagger/OpenAPI │  │
+│  └──────────────┘  └──────────────┘  └──────────────────┘  │
 ├─────────────────────────────────────────────────────────────┤
-│                      Business Layer                           │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐    │
-│  │   Services   │  │  Interfaces  │  │       DTOs       │    │
-│  └──────────────┘  └──────────────┘  └──────────────────┘    │
+│                      Business Layer                         │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐  │
+│  │   Services   │  │  Interfaces  │  │       DTOs       │  │
+│  └──────────────┘  └──────────────┘  └──────────────────┘  │
 ├─────────────────────────────────────────────────────────────┤
-│                      Data Layer                               │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐    │
-│  │  AppDbContext│  │   Entities   │  │   Migrations     │    │
-│  └──────────────┘  └──────────────┘  └──────────────────┘    │
+│                      Data Layer                             │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐  │
+│  │  AppDbContext│  │   Entities   │  │   Migrations     │  │
+│  └──────────────┘  └──────────────┘  └──────────────────┘  │
 ├─────────────────────────────────────────────────────────────┤
-│                      Infrastructure                           │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐    │
-│  │   SQLite DB  │  │   Serilog    │  │  Email Service   │    │
-│  └──────────────┘  └──────────────┘  └──────────────────┘    │
+│                      Infrastructure                         │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐  │
+│  │   SQLite DB  │  │   Serilog    │  │  Email Service   │  │
+│  └──────────────┘  └──────────────┘  └──────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## 📊 Entity İlişkileri
+## Entity İlişkileri
 
 ```
 ┌──────────────┐       ┌──────────────┐       ┌──────────────┐
@@ -44,6 +44,7 @@
                        │ - IsDeleted  │       │ - BookId     │
                        └──────────────┘       │ - CreatedAt  │
                                               │ - UpdatedAt  │
+                                              │ - IsDeleted  │
                                               └──────────────┘
                                                      │
                                                      │ *
@@ -65,16 +66,16 @@
                                               └──────────────┘
 ```
 
-## 🚀 Teknolojiler
+## Teknolojiler
 
-- **.NET 9** - Framework
-- **Entity Framework Core** - ORM
-- **SQLite** - Database
-- **Serilog** - Logging (JSON Format)
-- **JWT Bearer** - Authentication
-- **Swagger/OpenAPI** - API Dokümantasyonu
+- .NET 9
+- Entity Framework Core
+- SQLite
+- Serilog (JSON Format)
+- JWT Bearer Authentication
+- Swagger/OpenAPI
 
-## 🔐 Authentication
+## Authentication
 
 ### Auth Endpoints
 
@@ -116,50 +117,49 @@
 | ayse     | user123  | User  |
 | mehmet   | user123  | User  |
 
-## 📋 Endpoint Listesi
+## Endpoint Listesi
 
 ### Users (Minimal API)
 
-| Method | Endpoint      | Açıklama                  |
-| ------ | ------------- | ------------------------- |
-| GET    | `/users`      | Tüm kullanıcıları listele |
-| GET    | `/users/{id}` | Kullanıcı detayı          |
-| POST   | `/users`      | Yeni kullanıcı oluştur    |
-| PUT    | `/users/{id}` | Kullanıcı güncelle        |
-| DELETE | `/users/{id}` | Kullanıcı sil             |
+| Method | Endpoint      | Açıklama                    |
+| ------ | ------------- | --------------------------- |
+| GET    | `/users`      | Tüm kullanıcıları listele   |
+| GET    | `/users/{id}` | Kullanıcı detayı            |
+| POST   | `/users`      | Yeni kullanıcı oluştur      |
+| PUT    | `/users/{id}` | Kullanıcı güncelle          |
+| DELETE | `/users/{id}` | Kullanıcı sil (soft delete) |
 
 ### Books (Minimal API)
 
-| Method | Endpoint      | Açıklama              |
-| ------ | ------------- | --------------------- |
-| GET    | `/books`      | Tüm kitapları listele |
-| GET    | `/books/{id}` | Kitap detayı          |
-| POST   | `/books`      | Yeni kitap oluştur    |
-| PUT    | `/books/{id}` | Kitap güncelle        |
-| DELETE | `/books/{id}` | Kitap sil             |
+| Method | Endpoint      | Açıklama                |
+| ------ | ------------- | ----------------------- |
+| GET    | `/books`      | Tüm kitapları listele   |
+| GET    | `/books/{id}` | Kitap detayı            |
+| POST   | `/books`      | Yeni kitap oluştur      |
+| PUT    | `/books/{id}` | Kitap güncelle          |
+| DELETE | `/books/{id}` | Kitap sil (soft delete) |
 
 ### Categories (Minimal API)
 
-| Method | Endpoint                 | Açıklama                 |
-| ------ | ------------------------ | ------------------------ |
-| GET    | `/categories`            | Tüm kategorileri listele |
-| GET    | `/categories/{id}`       | Kategori detayı          |
-| GET    | `/categories/{id}/books` | Kategoriye ait kitaplar  |
-| POST   | `/categories`            | Yeni kategori oluştur    |
-| PUT    | `/categories/{id}`       | Kategori güncelle        |
-| DELETE | `/categories/{id}`       | Kategori sil             |
+| Method | Endpoint           | Açıklama                   |
+| ------ | ------------------ | -------------------------- |
+| GET    | `/categories`      | Tüm kategorileri listele   |
+| GET    | `/categories/{id}` | Kategori detayı            |
+| POST   | `/categories`      | Yeni kategori oluştur      |
+| PUT    | `/categories/{id}` | Kategori güncelle          |
+| DELETE | `/categories/{id}` | Kategori sil (soft delete) |
 
-### Loans (Controller - Layered Architecture)
+### Loans (Layered Architecture - Controller)
 
-| Method | Endpoint             | Açıklama                      |
-| ------ | -------------------- | ----------------------------- |
-| GET    | `/api/v1/loans`      | Tüm ödünç işlemlerini listele |
-| GET    | `/api/v1/loans/{id}` | Ödünç detayı                  |
-| POST   | `/api/v1/loans`      | Yeni ödünç oluştur            |
-| PUT    | `/api/v1/loans/{id}` | Ödünç güncelle                |
-| PATCH  | `/api/v1/loans/{id}` | Ödünç kısmi güncelle          |
-| DELETE | `/api/v1/loans/{id}` | Ödünç sil                     |
-| PATCH  | `/loans/{id}/return` | Kitap iade et                 |
+| Method | Endpoint                    | Açıklama             | Yetki         |
+| ------ | --------------------------- | -------------------- | ------------- |
+| GET    | `/api/v1/loans`             | Tüm ödünç işlemleri  | Authenticated |
+| GET    | `/api/v1/loans/{id}`        | Ödünç detayı         | Authenticated |
+| POST   | `/api/v1/loans`             | Yeni ödünç oluştur   | Authenticated |
+| PUT    | `/api/v1/loans/{id}`        | Ödünç güncelle       | Authenticated |
+| PATCH  | `/api/v1/loans/{id}`        | Ödünç kısmi güncelle | Authenticated |
+| DELETE | `/api/v1/loans/{id}`        | Ödünç sil            | Admin         |
+| PATCH  | `/api/v1/loans/{id}/return` | Kitap iade           | Authenticated |
 
 ### Nested Resources
 
@@ -168,7 +168,9 @@
 | GET    | `/users/{id}/loans`      | Kullanıcının ödünç işlemleri |
 | GET    | `/categories/{id}/books` | Kategorideki kitaplar        |
 
-## 📝 API Response Formatı
+## API Response Formatı
+
+Başarılı response:
 
 ```json
 {
@@ -188,7 +190,7 @@
 }
 ```
 
-### Hata Response
+Hata response:
 
 ```json
 {
@@ -198,14 +200,14 @@
 }
 ```
 
-## 🔧 Kurulum
+## Kurulum
 
 ### Gereksinimler
 
 - .NET 9 SDK
 - Git
 
-### Adımlar
+### Yerel Kurulum
 
 ```bash
 # Repository'yi klonla
@@ -213,101 +215,89 @@ git clone https://github.com/MuhammetFurkanKayan/APIdesign.git
 cd APIdesign
 
 # Bağımlılıkları yükle
-cd OdevAPI
 dotnet restore
 
-# Database migration'larını uygula
-dotnet run migrate
-
 # Uygulamayı çalıştır
+cd OdevAPI
 dotnet run
-
-# Swagger UI
-# https://localhost:7002/swagger
 ```
 
-### Docker ile Çalıştırma
+Uygulama varsayılan olarak `http://localhost:5000` adresinde çalışır.
+
+### Docker ile Kurulum
 
 ```bash
 # Image oluştur
-docker build -t library-mgmt .
+docker build -t library-api .
 
 # Container çalıştır
-docker run -p 8080:8080 library-mgmt
+docker run -p 5000:8080 -v library-data:/app/data library-api
 ```
 
-## 📁 Proje Yapısı
+## Proje Yapısı
 
 ```
 OdevAPI/
-├── Common/
-│   ├── ApiResponse.cs          # Standart API response
-│   └── Logging/
-│       └── CustomJsonFormatter.cs  # JSON log formatter
 ├── Controllers/
-│   ├── LoanController.cs       # Loan CRUD (Layered)
-│   └── AuditLogController.cs   # Audit log controller
+│   ├── LoanController.cs
+│   ├── AuditLogController.cs
+│   └── AuthController.cs
+├── Services/
+│   ├── LoanService.cs
+│   ├── AuditLogService.cs
+│   ├── AuthService.cs
+│   └── EmailService.cs
+├── Interfaces/
+│   ├── ILoanService.cs
+│   ├── IAuditLogService.cs
+│   ├── IAuthService.cs
+│   └── IEmailService.cs
 ├── Data/
-│   ├── AppDbContext.cs         # EF Core DbContext
-│   └── AppDbContextFactory.cs  # Design-time factory
-├── DTOs/
-│   ├── LoanCreateDto.cs
-│   ├── LoanUpdateDto.cs
-│   ├── LoanPatchDto.cs
-│   ├── ResponseDtos.cs         # Response DTOs
-│   └── EmailSettings.cs
+│   ├── AppDbContext.cs
+│   ├── AppDbContextFactory.cs
+│   └── DbSeeder.cs
 ├── Entities/
 │   ├── User.cs
 │   ├── Book.cs
 │   ├── Category.cs
 │   ├── Loan.cs
 │   └── AuditLog.cs
-├── Enums/
-│   └── LoanStatus.cs
-├── Interfaces/
-│   ├── ILoanService.cs
-│   ├── IAuditLogService.cs
-│   └── IEmailService.cs
+├── DTOs/
+│   ├── LoanDtos.cs
+│   ├── ResponseDtos.cs
+│   ├── AuthDtos.cs
+│   └── EntityToDtoMapper.cs
 ├── Middleware/
-│   └── GlobalExceptionMiddleware.cs  # Global exception handler
+│   └── GlobalExceptionMiddleware.cs
 ├── Migrations/
-│   └── InitialCreate.cs
-├── Services/
-│   ├── LoanService.cs
-│   ├── AuditLogService.cs
-│   └── EmailService.cs
-├── Templates/
-│   ├── LoanConfirmationTemplate.html
-│   └── LoanReturnTemplate.html
-├── Program.cs                  # Application entry point
-├── appsettings.json           # Configuration
-└── Dockerfile                 # Docker configuration
+├── Program.cs
+├── appsettings.json
+└── Dockerfile
 ```
 
-## ✅ Özellikler
+## Özellikler
 
-- [x] .NET 9 REST API
-- [x] Minimal API + Layered Architecture
-- [x] 5 Entity (User, Book, Category, Loan, AuditLog)
-- [x] Entity ilişkileri (1-N)
-- [x] CreatedAt/UpdatedAt alanları
-- [x] DTO kullanımı (Create, Update, Response)
-- [x] Standart API Response formatı
-- [x] Global Exception Handling
-- [x] Doğru HTTP Status Codes
-- [x] RESTful URL yapısı
-- [x] Swagger/OpenAPI
-- [x] Serilog JSON Logging
-- [x] EF Core Migrations
-- [x] Docker desteği
-- [x] CI/CD Pipeline (GitHub Actions)
-- [x] Email servisi
-- [x] JWT Authentication
-- [x] Role-based Access Control (Admin/User)
-- [x] Soft Delete
-- [x] Seed Data (Başlangıç verileri)
+- .NET 9 REST API
+- Minimal API + Layered Architecture
+- 5 Entity (User, Book, Category, Loan, AuditLog)
+- Entity ilişkileri (1-N)
+- CreatedAt/UpdatedAt alanları
+- DTO kullanımı (Create, Update, Response)
+- Standart API Response formatı
+- Global Exception Handling
+- HTTP Status Codes (200, 201, 400, 401, 404, 409, 500)
+- RESTful URL yapısı
+- Swagger/OpenAPI
+- Serilog JSON Logging
+- EF Core Migrations
+- Docker desteği
+- CI/CD Pipeline (GitHub Actions)
+- Email servisi
+- JWT Authentication
+- Role-based Access Control (Admin/User)
+- Soft Delete
+- Seed Data
 
-## 👤 Geliştirici
+## Geliştirici
 
-- **Ad:** Muhammet Furkan Kayan
-- **GitHub:** [@MuhammetFurkanKayan](https://github.com/MuhammetFurkanKayan)
+Muhammet Furkan Kayan

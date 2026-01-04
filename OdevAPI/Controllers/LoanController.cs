@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using OdevAPI.Common;
 using OdevAPI.DTOs;
-using OdevAPI.Entities;
 using OdevAPI.Interfaces;
 using Serilog.Context;
 
@@ -27,11 +26,11 @@ public class LoanController : Controller
         var loans = await _loanService.GetAllAsync();
         _logger.LogInformation("Found {Count} loans", loans.Count);
 
-        return Ok(new ApiResponse<List<Loan>>()
+        return Ok(new ApiResponse<List<LoanResponseDto>>()
         {
             Success = true,
             Message = "Loans listed",
-            Data = loans
+            Data = loans.ToDto()
         });
     }
 
@@ -43,11 +42,11 @@ public class LoanController : Controller
             _logger.LogInformation("Searching for loan with ID: {LoanId}", id);
             var loan = await _loanService.GetByIdAsync(id);
             _logger.LogInformation("Loan found with ID: {LoanId}", id);
-            return Ok(new ApiResponse<Loan>()
+            return Ok(new ApiResponse<LoanResponseDto>()
             {
                 Success = true,
                 Message = "Loan found",
-                Data = loan
+                Data = loan.ToDto()
             });
         }
         catch (Exception e)
@@ -56,7 +55,7 @@ public class LoanController : Controller
             {
                 _logger.LogError(e, "Loan not found with ID: {LoanId}", id);
             }
-            return NotFound(new ApiResponse<Loan>()
+            return NotFound(new ApiResponse<LoanResponseDto>()
             {
                 Success = false,
                 Message = e.Message,
@@ -75,11 +74,11 @@ public class LoanController : Controller
             var loan = await _loanService.CreateAsync(loanCreate);
             _logger.LogInformation("Loan created successfully: LoanId={LoanId}", loan.Id);
 
-            return CreatedAtAction(nameof(Get), new { id = loan.Id }, new ApiResponse<Loan>()
+            return CreatedAtAction(nameof(Get), new { id = loan.Id }, new ApiResponse<LoanResponseDto>()
             {
                 Success = true,
                 Message = "Loan created",
-                Data = loan
+                Data = loan.ToDto()
             });
         }
         catch (Exception e)
@@ -89,7 +88,7 @@ public class LoanController : Controller
                 _logger.LogError(e, "Error creating loan: User={UserId}, Book={BookId}",
                     loanCreate.UserId, loanCreate.BookId);
             }
-            return BadRequest(new ApiResponse<Loan>()
+            return BadRequest(new ApiResponse<LoanResponseDto>()
             {
                 Success = false,
                 Message = e.Message,
@@ -107,11 +106,11 @@ public class LoanController : Controller
             var loan = await _loanService.UpdateAsync(id, loanUpdate);
             _logger.LogInformation("Loan updated successfully: LoanId={LoanId}", id);
 
-            return Ok(new ApiResponse<Loan>()
+            return Ok(new ApiResponse<LoanResponseDto>()
             {
                 Success = true,
                 Message = "Loan updated",
-                Data = loan
+                Data = loan.ToDto()
             });
         }
         catch (Exception e)
@@ -120,7 +119,7 @@ public class LoanController : Controller
             {
                 _logger.LogError(e, "Error updating loan: LoanId={LoanId}", id);
             }
-            return BadRequest(new ApiResponse<Loan>()
+            return BadRequest(new ApiResponse<LoanResponseDto>()
             {
                 Success = false,
                 Message = e.Message,
@@ -137,11 +136,11 @@ public class LoanController : Controller
             _logger.LogInformation("Patching loan: LoanId={LoanId}", id);
             var loan = await _loanService.PatchAsync(id, patchDto);
             _logger.LogInformation("Loan patched successfully: LoanId={LoanId}", id);
-            return Ok(new ApiResponse<Loan>()
+            return Ok(new ApiResponse<LoanResponseDto>()
             {
                 Success = true,
                 Message = "Loan updated (patch)",
-                Data = loan
+                Data = loan.ToDto()
             });
         }
         catch (Exception ex)
@@ -150,7 +149,7 @@ public class LoanController : Controller
             {
                 _logger.LogError(ex, "Error patching loan: LoanId={LoanId}", id);
             }
-            return BadRequest(new ApiResponse<Loan>()
+            return BadRequest(new ApiResponse<LoanResponseDto>()
             {
                 Success = false,
                 Message = ex.Message,

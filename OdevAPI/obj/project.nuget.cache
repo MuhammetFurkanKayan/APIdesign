@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "1hd1Llnoqno=",
+  "dgSpecHash": "dy8JTs/vbVU=",
   "success": true,
   "projectFilePath": "C:\\Users\\Furkan\\APIdesign\\OdevAPI\\OdevAPI.csproj",
   "expectedPackageFiles": [
@@ -71,5 +71,18 @@
     "C:\\Users\\Furkan\\.nuget\\packages\\system.text.json\\9.0.0\\system.text.json.9.0.0.nupkg.sha512",
     "C:\\Users\\Furkan\\.nuget\\packages\\system.threading.channels\\7.0.0\\system.threading.channels.7.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "message": "OdevAPI, Serilog.Formatting.Compact (>= 2.1.0) öğesine bağlı ancak Serilog.Formatting.Compact 2.1.0 bulunamadı. Bunun yerine Serilog.Formatting.Compact 3.0.0 çözümlendi.",
+      "projectPath": "C:\\Users\\Furkan\\APIdesign\\OdevAPI\\OdevAPI.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\Furkan\\APIdesign\\OdevAPI\\OdevAPI.csproj",
+      "libraryId": "Serilog.Formatting.Compact",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    }
+  ]
 }

@@ -3884,6 +3884,7 @@
       "Microsoft.EntityFrameworkCore.Sqlite >= 9.0.0",
       "Microsoft.EntityFrameworkCore.Tools >= 9.0.0",
       "Serilog.AspNetCore >= 9.0.0",
+      "Serilog.Formatting.Compact >= 2.1.0",
       "Swashbuckle.AspNetCore.Swagger >= 6.6.2",
       "Swashbuckle.AspNetCore.SwaggerGen >= 6.6.2",
       "Swashbuckle.AspNetCore.SwaggerUI >= 6.6.2"
@@ -3968,6 +3969,10 @@
             "target": "Package",
             "version": "[9.0.0, )"
           },
+          "Serilog.Formatting.Compact": {
+            "target": "Package",
+            "version": "[2.1.0, )"
+          },
           "Swashbuckle.AspNetCore.Swagger": {
             "target": "Package",
             "version": "[6.6.2, )"
@@ -4003,5 +4008,17 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "OdevAPI, Serilog.Formatting.Compact (>= 2.1.0) öğesine bağlı ancak Serilog.Formatting.Compact 2.1.0 bulunamadı. Bunun yerine Serilog.Formatting.Compact 3.0.0 çözümlendi.",
+      "libraryId": "Serilog.Formatting.Compact",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    }
+  ]
 }

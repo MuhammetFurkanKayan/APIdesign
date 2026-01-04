@@ -79,6 +79,10 @@
               "target": "Package",
               "version": "[9.0.0, )"
             },
+            "Serilog.Formatting.Compact": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
             "Swashbuckle.AspNetCore.Swagger": {
               "target": "Package",
               "version": "[6.6.2, )"

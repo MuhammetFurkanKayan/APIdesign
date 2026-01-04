@@ -3,6 +3,7 @@ using OdevAPI.Common;
 using OdevAPI.DTOs;
 using OdevAPI.Entities;
 using OdevAPI.Interfaces;
+using Serilog.Context;
 
 namespace OdevAPI.Controllers;
 
@@ -51,7 +52,10 @@ public class LoanController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Loan not found with ID: {LoanId}", id);
+            using (LogContext.PushProperty("StatusCode", StatusCodes.Status404NotFound))
+            {
+                _logger.LogError(e, "Loan not found with ID: {LoanId}", id);
+            }
             return NotFound(new ApiResponse<Loan>()
             {
                 Success = false,
@@ -80,8 +84,11 @@ public class LoanController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error creating loan: User={UserId}, Book={BookId}",
-                loanCreate.UserId, loanCreate.BookId);
+            using (LogContext.PushProperty("StatusCode", StatusCodes.Status400BadRequest))
+            {
+                _logger.LogError(e, "Error creating loan: User={UserId}, Book={BookId}",
+                    loanCreate.UserId, loanCreate.BookId);
+            }
             return BadRequest(new ApiResponse<Loan>()
             {
                 Success = false,
@@ -109,7 +116,10 @@ public class LoanController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error updating loan: LoanId={LoanId}", id);
+            using (LogContext.PushProperty("StatusCode", StatusCodes.Status400BadRequest))
+            {
+                _logger.LogError(e, "Error updating loan: LoanId={LoanId}", id);
+            }
             return BadRequest(new ApiResponse<Loan>()
             {
                 Success = false,
@@ -136,7 +146,10 @@ public class LoanController : Controller
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error patching loan: LoanId={LoanId}", id);
+            using (LogContext.PushProperty("StatusCode", StatusCodes.Status400BadRequest))
+            {
+                _logger.LogError(ex, "Error patching loan: LoanId={LoanId}", id);
+            }
             return BadRequest(new ApiResponse<Loan>()
             {
                 Success = false,
@@ -164,7 +177,10 @@ public class LoanController : Controller
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error deleting loan: LoanId={LoanId}", id);
+            using (LogContext.PushProperty("StatusCode", StatusCodes.Status404NotFound))
+            {
+                _logger.LogError(ex, "Error deleting loan: LoanId={LoanId}", id);
+            }
             return NotFound(new ApiResponse<bool>()
             {
                 Success = false,

@@ -7,6 +7,7 @@ using OdevAPI.Enums;
 using OdevAPI.Interfaces;
 using OdevAPI.Services;
 using Serilog;
+using Serilog.Context;
 
 // Serilog configuration
 Log.Logger = new LoggerConfiguration()
@@ -14,6 +15,9 @@ Log.Logger = new LoggerConfiguration()
         .AddJsonFile("appsettings.json")
         .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", true)
         .Build())
+    .Enrich.FromLogContext()
+    .Enrich.WithProperty("Application", "LibraryMgmt")
+    .Enrich.WithProperty("Environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production")
     .CreateLogger();
 
 try
@@ -23,7 +27,13 @@ try
     var builder = WebApplication.CreateBuilder(args);
     
     // Serilog'u Host'a ekle
-    builder.Host.UseSerilog();
+    builder.Host.UseSerilog((context, services, loggerConfiguration) =>
+        loggerConfiguration
+            .ReadFrom.Configuration(context.Configuration)
+            .ReadFrom.Services(services)
+            .Enrich.FromLogContext()
+            .Enrich.WithProperty("Application", "LibraryMgmt")
+            .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName));
 
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -59,7 +69,31 @@ try
         return;
     }
 
+    // Request logging middleware
+    app.Use(async (context, next) =>
+    {
+        using (LogContext.PushProperty("RequestMethod", context.Request.Method))
+        using (LogContext.PushProperty("RequestPath", context.Request.Path.Value))
+        using (LogContext.PushProperty("TraceIdentifier", context.TraceIdentifier))
+        {
+            await next();
+        }
+    });
+
     app.UseHttpsRedirection();
+
+    app.UseSerilogRequestLogging(options =>
+    {
+        options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms";
+        options.EnrichDiagnosticContext = (diagnostics, context) =>
+        {
+            diagnostics.Set("TraceIdentifier", context.TraceIdentifier);
+            diagnostics.Set("RequestHost", context.Request.Host.Value);
+            diagnostics.Set("RequestProtocol", context.Request.Protocol);
+            diagnostics.Set("ClientIp", context.Connection.RemoteIpAddress?.ToString());
+            diagnostics.Set("UserAgent", context.Request.Headers["User-Agent"].ToString());
+        };
+    });
 
     app.MapControllers();
 

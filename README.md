@@ -263,9 +263,12 @@ OdevAPI/
 │   ├── Loan.cs
 │   └── AuditLog.cs
 ├── DTOs/
-│   ├── LoanDtos.cs
+│   ├── LoanCreateDto.cs
+│   ├── LoanUpdateDto.cs
+│   ├── LoanPatchDto.cs
 │   ├── ResponseDtos.cs
 │   ├── AuthDtos.cs
+│   ├── EmailSettings.cs
 │   └── EntityToDtoMapper.cs
 ├── Middleware/
 │   └── GlobalExceptionMiddleware.cs

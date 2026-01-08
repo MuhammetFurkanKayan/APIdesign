@@ -270,8 +270,17 @@ OdevAPI/
 │   ├── AuthDtos.cs
 │   ├── EmailSettings.cs
 │   └── EntityToDtoMapper.cs
+├── Common/
+│   ├── ApiResponse.cs
+│   └── Logging/
+│       └── CustomJsonFormatter.cs
+├── Enums/
+│   └── LoanStatus.cs
 ├── Middleware/
 │   └── GlobalExceptionMiddleware.cs
+├── Templates/
+│   ├── LoanConfirmationTemplate.html
+│   └── LoanReturnTemplate.html
 ├── Migrations/
 ├── Program.cs
 ├── appsettings.json

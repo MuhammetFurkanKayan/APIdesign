@@ -31,21 +31,21 @@
 ## Entity İlişkileri
 
 ```
-┌──────────────┐       ┌──────────────┐       ┌──────────────┐
-│   Category   │ 1   * │     Book     │ 1   * │     Loan     │
-├──────────────┤◄──────├──────────────┤◄──────├──────────────┤
-│ - Id         │       │ - Id         │       │ - Id         │
-│ - Name       │       │ - Title      │       │ - Notes      │
-│ - Description│       │ - Author     │       │ - Status     │
-│ - CreatedAt  │       │ - ISBN       │       │ - LoanDate   │
-│ - UpdatedAt  │       │ - CategoryId │       │ - DueDate    │
-│ - IsDeleted  │       │ - CreatedAt  │       │ - ReturnDate │
-└──────────────┘       │ - UpdatedAt  │       │ - UserId     │
-                       │ - IsDeleted  │       │ - BookId     │
-                       └──────────────┘       │ - CreatedAt  │
-                                              │ - UpdatedAt  │
-                                              │ - IsDeleted  │
-                                              └──────────────┘
+┌──────────────┐       ┌────────────────┐       ┌──────────────┐
+│   Category   │ 1   * │      Book      │ 1   * │     Loan     │
+├──────────────┤◄──────├────────────────┤◄──────├──────────────┤
+│ - Id         │       │ - Id           │       │ - Id         │
+│ - Name       │       │ - Title        │       │ - Notes      │
+│ - Description│       │ - Author       │       │ - Status     │
+│ - CreatedAt  │       │ - ISBN         │       │ - LoanDate   │
+│ - UpdatedAt  │       │ - Description  │       │ - DueDate    │
+│ - IsDeleted  │       │ - TotalCopies  │       │ - ReturnDate │
+└──────────────┘       │ - AvailCopies  │       │ - UserId     │
+                       │ - CategoryId   │       │ - BookId     │
+                       │ - CreatedAt    │       │ - CreatedAt  │
+                       │ - UpdatedAt    │       │ - UpdatedAt  │
+                       │ - IsDeleted    │       │ - IsDeleted  │
+                       └────────────────┘       └──────────────┘
                                                      │
                                                      │ *
                                                      ▼ 1

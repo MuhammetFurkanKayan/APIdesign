@@ -27,8 +27,10 @@ ENV PATH="$PATH:/tools"
 RUN dotnet ef migrations bundle \
     --project OdevAPI.csproj \
     --startup-project OdevAPI.csproj \
+    --context AppDbContext \
     --configuration Release \
-    --output /app/efbundle
+    --output /app/efbundle \
+    --verbose
 
 FROM base AS final
 WORKDIR /app

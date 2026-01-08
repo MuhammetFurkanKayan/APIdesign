@@ -282,6 +282,9 @@ OdevAPI/
 │   ├── LoanConfirmationTemplate.html
 │   └── LoanReturnTemplate.html
 ├── Migrations/
+│   ├── 20251228220745_InitialCreate.cs
+│   ├── 20251228220745_InitialCreate.Designer.cs
+│   └── AppDbContextModelSnapshot.cs
 ├── Program.cs
 ├── appsettings.json
 └── Dockerfile

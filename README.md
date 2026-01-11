@@ -222,7 +222,9 @@ cd OdevAPI
 dotnet run
 ```
 
-Uygulama varsayılan olarak `http://localhost:5000` adresinde çalışır.
+Uygulama varsayılan olarak `http://localhost:5229` adresinde çalışır.
+
+Swagger UI: `http://localhost:5229/swagger`
 
 ### Docker ile Kurulum
 
@@ -231,7 +233,7 @@ Uygulama varsayılan olarak `http://localhost:5000` adresinde çalışır.
 docker build -t library-api .
 
 # Container çalıştır
-docker run -p 5000:8080 -v library-data:/app/data library-api
+docker run -p 5229:8080 -v library-data:/app/data library-api
 ```
 
 ## Proje Yapısı

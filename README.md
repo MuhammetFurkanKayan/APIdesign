@@ -117,6 +117,13 @@
 | ayse     | user123  | User  |
 | mehmet   | user123  | User  |
 
+### Token Kullanımı
+
+1. Login yap ve token al
+2. Swagger'da sağ üstteki "Authorize" butonuna tıkla
+3. Token'ı yapıştır (Bearer yazmana gerek yok)
+4. Artık korumalı endpoint'leri (`/api/v1/loans`) kullanabilirsin
+
 ## Endpoint Listesi
 
 ### Users (Minimal API)
